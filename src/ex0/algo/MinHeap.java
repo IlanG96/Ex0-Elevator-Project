@@ -104,7 +104,7 @@ public class MinHeap {
                 right = this.getRightChild(node);
             }
         }
-
+        size=heap.size();
     }
     public int peek(){
         return this.heap.get(0);

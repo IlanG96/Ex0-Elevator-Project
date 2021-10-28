@@ -10,7 +10,7 @@ import ex0.Elevator;
 קובץ שינויים בזמנים
 https://docs.google.com/spreadsheets/d/15xdKg54MZlS8HdEOpl2ack6j4OCe1mMRHgPfU8PNEQ0/edit?usp=sharing */
 public class RealElevatorAlgo implements ElevatorAlgo {
-    public static final int UP = 1, DOWN = -1, LEVEL = 0;
+    public static final int UP = 1, DOWN = -1, LEVEL = 0 ,ERROR=-2;
     private int _direction;
     private MaxHeap[] DownQueue;
     private MinHeap[] UpQueue;
@@ -85,20 +85,21 @@ public class RealElevatorAlgo implements ElevatorAlgo {
         double xspeed=0,finalxspeed=0,min = Integer.MAX_VALUE;
         while (x < elevClose) {
             Elevator check = this._building.getElevetor(x);
-            if (check.getState() == UP && DownQueue[x].getSize() == 0) { //need to add level //DELETE DOWNQUEUE SIZE AND SOME TESTS WILL BE FASTER
-                if ((dist(src, x) <= min)) {
-                    finalx = x;
-                    min = dist(src, x);
-                }
-            } else if (check.getState() == LEVEL) {
-                xspeed = check.getSpeed();
-                if ((dist(src, x) <= min) && (finalxspeed < xspeed)) {
-                    min = dist(src, x);
-                    finalx = x;
-                    finalxspeed = xspeed;
+            if(check.getState()!=ERROR) {
+                if (check.getState() == UP && DownQueue[x].getSize() == 0) { //need to add level //DELETE DOWNQUEUE SIZE AND SOME TESTS WILL BE FASTER
+                    if ((dist(src, x) <= min)) {
+                        finalx = x;
+                        min = dist(src, x);
+                    }
+                } else if (check.getState() == LEVEL) {
+                    xspeed = check.getSpeed();
+                    if ((dist(src, x) <= min) && (finalxspeed < xspeed)) {
+                        min = dist(src, x);
+                        finalx = x;
+                        finalxspeed = xspeed;
+                    }
                 }
             }
-
             x++;
         }
         return finalx;
@@ -113,15 +114,17 @@ public class RealElevatorAlgo implements ElevatorAlgo {
         double xspeed=0,finalxspeed=0,min = Integer.MAX_VALUE;
         while (x < elevClose) {
             Elevator check = this._building.getElevetor(x);
-            if (check.getState() == DOWN && UpQueue[x].getSize() == 0) {//need to add level
-                if ((dist(src, x) < min)) {
-                    min = dist(src, x);
-                    finalx = x;
-                }
-            } else if (check.getState() == LEVEL ){//{&& UpQueue[x].getSize() == 0) {
-                if ((dist(src, x) <= min)) {
-                    min = dist(src, x);
-                    finalx=x;
+            if(check.getState()!=ERROR) {
+                if (check.getState() == DOWN && UpQueue[x].getSize() == 0) {//need to add level
+                    if ((dist(src, x) < min)) {
+                        min = dist(src, x);
+                        finalx = x;
+                    }
+                } else if (check.getState() == LEVEL) {//{&& UpQueue[x].getSize() == 0) {
+                    if ((dist(src, x) <= min)) {
+                        min = dist(src, x);
+                        finalx = x;
+                    }
                 }
             }
             x++;
@@ -161,13 +164,7 @@ public class RealElevatorAlgo implements ElevatorAlgo {
      */
     private int count(int elev){
         int number=0;
-        Elevator x=_building.getElevetor(elev);
-        if(x.getState()==UP){
-            number=UpQueue[elev].getSize();
-        }
-        else if(x.getState()==DOWN){
-            number=DownQueue[elev].getSize();
-        }
+        number=DownQueue[elev].getSize()+UpQueue[elev].getSize();
         return number;
     }
 
@@ -175,12 +172,6 @@ public class RealElevatorAlgo implements ElevatorAlgo {
         return this._direction;
     }
 
-    private void f0(int elev) {
-        if (UpQueue[elev].getSize() == 0 && DownQueue[elev].getSize() == 0) {
-
-        }
-
-    }
     /**
      *This function send the 2 slowest elevator to the max floor to help with the higher level calls
      */

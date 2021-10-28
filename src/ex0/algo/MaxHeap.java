@@ -109,7 +109,7 @@ public int peek(){
                 right = this.getRightChild(node);
             }
         }
-
+size=heap.size();
 
     }
     /*Custom get size */
