@@ -160,12 +160,11 @@ class RealElevatorAlgoTest {
         B4=Simulator_A.getBuilding();
         MyAlgo4=new RealElevatorAlgo(B4);
         Simulator_A.initAlgo(MyAlgo4);
-        MyAlgo4.getBuilding().getElevetor(0).goTo(4);
-        MyAlgo4.getBuilding().getElevetor(2).goTo(10);
         Simulator_A.runSim();
-        //assertEquals(4,MyAlgo4.getBuilding().getElevetor(0).getPos());
-        MyAlgo4.getBuilding().getElevetor(2).goTo(10);
-        assertEquals(10,MyAlgo4.getBuilding().getElevetor(2).getPos());
+        MyAlgo4.getBuilding().getElevetor(1).goTo(40);
+        assertEquals(40,MyAlgo4.getBuilding().getElevetor(1).getPos());
+        MyAlgo4.getBuilding().getElevetor(3).goTo(2);
+        assertEquals(2,MyAlgo4.getBuilding().getElevetor(2).getPos());
 
     }
     }

@@ -148,7 +148,7 @@ public class RealElevatorAlgo implements ElevatorAlgo {
         double close=thisElev.getTimeForClose();
         double open= thisElev.getTimeForOpen();
         double rideTime=thisElev.getSpeed()+stop+start+close+open;
-        if(thisElev.getState()==LEVEL){
+        if(thisElev.getState()==LEVEL&&countStops==0){
             ans =(Math.abs(pos-src))/rideTime;
         }
         else {
